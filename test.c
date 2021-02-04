@@ -3,7 +3,7 @@
 int main(int argc, char** args) { // we will talk about this stuff later
   int x, y, z; // integers
 
-  x = 13; // define initial values
+  x = 3; // define initial values
   y = 7;
 
   z = x; // swap values
@@ -11,12 +11,24 @@ int main(int argc, char** args) { // we will talk about this stuff later
   y = z;
 
   if (x > y) {
-    printf("hello\n");
+    printf("if: hello\n");
   }
 
-  while (x > 0) { // loop (cycle)
-    printf("%i\n", 2 * x); // print an integer
+  z = x;
+  while (x > 0) { // loop (cycle): check first, do later
+    printf("while: %i\n", 2 * x); // print an integer
     x--; // lower by one
+  }
+
+  x = z;
+  do { // do first, check the condition after
+    printf("do-while: %i\n", 2 * x); // print an integer
+    x--; // lower by one
+  } while (x > 0);
+
+  
+  for (x = 1; x <= 5; x += 2) { // the complex order discussed on whiteboard
+    printf("for: y - x = %i now and x = %i\n", y - x, x); // regular content
   }
   
   return 1;
