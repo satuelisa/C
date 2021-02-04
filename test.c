@@ -3,7 +3,7 @@
 int main(int argc, char** args) { // we will talk about this stuff later
   int x, y, z; // integers
 
-  x = 3; // define initial values
+  x = 13; // define initial values
   y = 9;
 
   z = x; // swap values
