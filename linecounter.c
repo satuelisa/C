@@ -2,7 +2,7 @@
 
 int main() {
   long nc;
-  int lc;
+  int lc = 0;
   char c;
   for (nc = 0; (c = getchar()) != EOF; nc++) {
     if (c == '\n') {
