@@ -1,0 +1,20 @@
+01110	14
+10111	23
+----------	& AND (1 if both are 1, otherwise 0)
+00110   6	4 + 2
+
+
+01110	14
+10111	23
+----------	| OR (0 if both are 0, otherwise 1)
+11111	31	16 + 8 + 4 + 2 + 1
+
+
+01110	14
+10111	23
+----------	^ XOR (1 if only one is 1, otherwise 0)
+11001	25	16 + 8 + 1
+
+x << p		add p zeros to the end of x
+x >> p		remove the last p bits of x
+
