@@ -1,0 +1,49 @@
+X = -1 # easy mode (another matrix to track reveals)
+X = 9 # hard mode (negatives for revealed positions)
+
+  A B C D E
+1 1 1 1 1 X         
+2 1 X 1 1 1
+3 2 2 1 0 0
+4 X 2 1 0 0
+5 X 2 1 0 0
+
+user sees this:
+
+  A B C D E
+1 # # # # #         
+2 # # # # #
+3 # # # # #
+4 # # # # #
+5 # # # # #
+
+user types something like C3
+
+  A B C D E
+1 # # # # #         
+2 # # # # #
+3 # # 1 # #
+4 # # # # #
+5 # # # # #
+
+user types something like E3
+
+  A B C D E
+1 # # # # #         
+2 # # 1 1 1
+3 # # 1 0 0
+4 # # 1 0 0
+5 # # 1 0 0
+
+user types something like A5
+
+user loses
+
+  A B C D E
+1 1 1 1 1 X         
+2 1 X 1 1 1
+3 2 2 1 0 0
+4 X 2 1 0 0
+5 * 2 1 0 0
+
+You Lose!!!
