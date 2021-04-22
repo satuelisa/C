@@ -46,11 +46,15 @@ node* insert(char value, node* pos, int d) {
 
 void show(node* position, char prefix) {
   int i;
+  char suffix = ' ';
   if (position != NULL) {
     for (i = 0; i < position->depth; i++) {
       printf(" ");
     }
-    printf("%c %c (%d)\n", prefix, position->value, position->counter);
+    if (position->leftChild == NULL && position->rightChild == NULL) { // no children
+      suffix = '#'; // a leaf node (dead end)
+    }
+    printf("%c %c (%d) %c\n", prefix, position->value, position->counter, suffix);
     show(position->leftChild, '<');
     show(position->rightChild, '>');
   }
@@ -66,13 +70,15 @@ int main() {
     case '-':
       erase(tree);
       return 0;
+    case '!':
+      show(tree, '+');
+      break;
     default:
       if (!isspace(c)) {
 	n = insert(tolower(c), tree, 0);
 	if (tree == NULL) {
 	  tree = n; // this is the root
 	}
-	show(tree, '+');
       }
       break;
     }
