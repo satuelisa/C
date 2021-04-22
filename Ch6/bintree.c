@@ -20,6 +20,7 @@ void erase(node* pos) {
 }
 
 node* insert(char value, node* pos, int d) {
+  node* temp;
   if (pos == NULL) {
     pos = (node*)malloc(sizeof(node));
     pos->value = value;
@@ -29,9 +30,15 @@ node* insert(char value, node* pos, int d) {
     if (pos->value == value) {
       ++(pos->counter);
     } else if (pos->value > value) { // value is smaller
-      pos->leftChild = insert(value, pos->leftChild, d + 1);
+      temp = insert(value, pos->leftChild, d + 1);
+      if (pos->leftChild == NULL) {
+	pos->leftChild = temp;
+      }
     } else {
-      pos->rightChild = insert(value, pos->rightChild, d + 1); // value is larger
+      temp = insert(value, pos->rightChild, d + 1); // value is larger
+      if (pos->rightChild == NULL) {
+	pos->rightChild = temp;
+      }
     }
   }
   return pos;
@@ -47,6 +54,7 @@ void show(node* position, char prefix) {
     show(position->leftChild, '<');
     show(position->rightChild, '>');
   }
+  return;
 }
 
 int main() {
