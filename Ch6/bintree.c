@@ -61,6 +61,15 @@ void show(node* position, char prefix) {
   return;
 }
 
+
+void alpha(node* position) {
+  if (position != NULL) {
+    alpha(position->leftChild);
+    printf("%c", position->value);
+    alpha(position->rightChild);
+  }
+}
+
 int main() {
   node* n = NULL;
   node* tree = NULL; 
@@ -73,6 +82,9 @@ int main() {
     case '!':
       show(tree, '+');
       break;
+    case '?':
+      alpha(tree);
+      printf("\n");
     default:
       if (!isspace(c)) {
 	n = insert(tolower(c), tree, 0);
