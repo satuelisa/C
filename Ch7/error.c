@@ -13,7 +13,7 @@ int input() {
     exit(1);
   }
   for (i = 0; i < count;) {
-    scanf("%s %s %s\n", n, p, u);
+    scanf("%s %s %s", n, p, u);
     printf("Student %d %s (%s) is %s\n", ++i, u, n, p);
   }
   return count;

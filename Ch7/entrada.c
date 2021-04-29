@@ -16,7 +16,8 @@ int main(int c, char** d) {
     printf("What are the student ID number, study program, and username for student %d? ", (i + 1));
     s[i]->program = (char*)malloc(sizeof(char) * (PE + 1));
     s[i]->username = (char*)malloc(sizeof(char) * (UNAME + 1));
-    scanf("%u %s %s", &(s[i]->number), s[i]->program, s[i]->username);    
+    scanf("%u %s %s", &(s[i]->number), s[i]->program, s[i]->username);
+    printf("\n");
   }
   for (i = 0; i < count; i++) {
     printf("Student %d %s (%u) is %s\n", (i + 1), s[i]->username, s[i]->number, s[i]->program);
