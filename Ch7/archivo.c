@@ -3,7 +3,6 @@
 #include "entrada.h"
 #define PE 3
 #define UNAME 8
-#define TRUE 1
 
 int main(int x, char** y) {
   char c;
