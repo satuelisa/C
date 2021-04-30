@@ -6,26 +6,29 @@ typedef struct treenode {
   char value;
   unsigned int counter;
   unsigned int depth;
-  struct treenode* leftChild;
-  struct treenode* rightChild;
+  struct treenode* izq;
+  struct treenode* der;
 } node;
 
 void erase(node* pos) {
   if (pos != NULL) {
-    erase(pos->leftChild);
-    erase(pos->rightChild);
+    erase(pos->izq);
+    erase(pos->der);
     free(pos);
   }
   return;
 }
 
 void set_depth(node* pos, int d) {
-  pos->depth = d;
-  if (pos->leftChild != NULL) {
-    set_depth(pos->leftChild, d + 1);
+  if (pos == NULL) {
+    return; // empty tree
   }
-  if (pos->rightChild != NULL) {
-    set_depth(pos->rightChild, d + 1);
+  pos->depth = d;
+  if (pos->izq != NULL) {
+    set_depth(pos->izq, d + 1);
+  }
+  if (pos->der != NULL) {
+    set_depth(pos->der, d + 1);
   }
 }
 
@@ -39,14 +42,14 @@ node* insert(char value, node* pos) {
     if (pos->value == value) {
       ++(pos->counter);
     } else if (pos->value > value) { // value is smaller
-      temp = insert(value, pos->leftChild);
-      if (pos->leftChild == NULL) {
-	pos->leftChild = temp;
+      temp = insert(value, pos->izq);
+      if (pos->izq == NULL) {
+	pos->izq = temp;
       }
     } else {
-      temp = insert(value, pos->rightChild); // value is larger
-      if (pos->rightChild == NULL) {
-	pos->rightChild = temp;
+      temp = insert(value, pos->der); // value is larger
+      if (pos->der == NULL) {
+	pos->der = temp;
       }
     }
   }
@@ -55,9 +58,6 @@ node* insert(char value, node* pos) {
 
 node* eliminar(char value, node* pos) { // WORK IN PROGRESS
   node* hijo;
-  node* padre;
-  node* izq;
-  node* der;
   int count;
   if (pos != NULL) {
     if (pos->value == value) {
@@ -66,83 +66,74 @@ node* eliminar(char value, node* pos) { // WORK IN PROGRESS
 #ifdef DEBUG
 	printf("%c ya no tiene ocurrencias\n", value);
 #endif
-	if (pos->leftChild == NULL && pos->rightChild == NULL) {
+	if (pos->izq == NULL && pos->der == NULL) {
 #ifdef DEBUG
 	  printf("%c no tiene hijos\n", value);
 #endif
 	  free(pos);
 	  return NULL;
-	} else if (pos->leftChild != NULL && pos->rightChild == NULL) {
-	  hijo = pos->leftChild;
+	} else if (pos->izq != NULL && pos->der == NULL) {
+	  hijo = pos->izq;
 #ifdef DEBUG
 	  printf("%c tiene puro hijo izq %c\n", value, hijo->value);
 #endif	  
 	  free(pos);
 	  return hijo;
-	} else if (pos->leftChild == NULL && pos->rightChild != NULL) {
-	  hijo = pos->rightChild;
+	} else if (pos->izq == NULL && pos->der != NULL) {
+	  hijo = pos->der;
 #ifdef DEBUG
 	  printf("%c tiene puro hijo der %c\n", value, hijo->value);
 #endif	  
 	  free(pos);
 	  return hijo;
 	} else {
-	  izq = pos->leftChild;
-	  der = pos->rightChild;
 #ifdef DEBUG
-	  printf("%c tiene dos hijos %c + %c\n", value, izq->value, der->value);
+	  printf("%c tiene dos hijos %c + %c\n", value, pos->izq->value, pos->der->value);
 #endif
-	  hijo = der;
-	  while (hijo->leftChild != NULL) { // encontrar el menor a la der
-	    padre = hijo;
-	    hijo = hijo->leftChild;
+	  hijo = pos->der;
+	  while (hijo->izq != NULL) { // encontrar el menor a la der
+	    hijo = hijo->izq;
 	  }
-	  if (hijo != NULL) {
 #ifdef DEBUG
-	    printf("voy a mover %c desde %c\n", hijo->value, padre->value);
+	  printf("voy a colgar %c desde %c\n", pos->izq->value, hijo->value);
 #endif
-	    padre->leftChild = NULL;
-	    hijo->leftChild = izq;
-	    hijo->rightChild = der;
-	    return hijo; // sustituye al nodo borrado
-	  } else {
-	    der->leftChild = izq;
-	    return der;
-	  }
+	  hijo->izq = pos->izq;
+	  free(pos);
+	  return hijo; // el hijo derecho sustituye al nodo borrado
 	}
       }
     } else if (pos->value > value) {
-      pos->leftChild = eliminar(value, pos->leftChild);
+      pos->izq = eliminar(value, pos->izq);
     } else {
-      pos->rightChild = eliminar(value, pos->rightChild);      
+      pos->der = eliminar(value, pos->der);      
     }
   }
   return pos;
 }
 
-void show(node* position, char prefix) {
+void show(node* pos, char prefix) {
   int i;
   char suffix = ' ';
-  if (position != NULL) {
-    for (i = 0; i < position->depth; i++) {
+  if (pos != NULL) {
+    for (i = 0; i < pos->depth; i++) {
       printf(" ");
     }
-    if (position->leftChild == NULL && position->rightChild == NULL) { // no children
+    if (pos->izq == NULL && pos->der == NULL) { // no children
       suffix = '#'; // a leaf node (dead end)
     }
-    printf("%c %c (%d) %c\n", prefix, position->value, position->counter, suffix);
-    show(position->leftChild, '<');
-    show(position->rightChild, '>');
+    printf("%c %c (%d) %c\n", prefix, pos->value, pos->counter, suffix);
+    show(pos->izq, '<');
+    show(pos->der, '>');
   }
   return;
 }
 
 
-void alpha(node* position) {
-  if (position != NULL) {
-    alpha(position->leftChild);
-    printf("%c", position->value);
-    alpha(position->rightChild);
+void alpha(node* pos) {
+  if (pos != NULL) {
+    alpha(pos->izq);
+    printf("%c", pos->value);
+    alpha(pos->der);
   }
 }
 
