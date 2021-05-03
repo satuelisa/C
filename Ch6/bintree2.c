@@ -1,7 +1,7 @@
 #include <stdio.h> // printf
 #include <stdlib.h> // malloc & free
 #include <ctype.h> // isspace & tolower
-#define DEBUG 1
+//#define DEBUG 1 // enable for tons of printouts
 typedef struct treenode {
   char value;
   unsigned int counter;
@@ -20,39 +20,48 @@ void erase(node* pos) {
 }
 
 void set_depth(node* pos, int d) {
-  if (pos == NULL) {
-    return; // empty tree
-  }
-  pos->depth = d;
-  if (pos->izq != NULL) {
+  if (pos != NULL) {
+    pos->depth = d;
+#ifdef DEBUG
+    printf("%c is at depth %d\n", pos->value, d);
+#endif
     set_depth(pos->izq, d + 1);
-  }
-  if (pos->der != NULL) {
     set_depth(pos->der, d + 1);
   }
 }
 
 node* insert(char value, node* pos) {
-  node* temp;
   if (pos == NULL) {
+#ifdef DEBUG
+    printf("%c recibe un nuevo nodo\n", value);
+#endif
     pos = (node*)malloc(sizeof(node));
     pos->value = value;
+    pos->depth = 0;
     pos->counter = 1;
+    pos->izq = NULL;
+    pos->der = NULL;
   } else {
     if (pos->value == value) {
+#ifdef DEBUG
+      printf("%c incrementa su contador\n", value);
+#endif
       ++(pos->counter);
     } else if (pos->value > value) { // value is smaller
-      temp = insert(value, pos->izq);
-      if (pos->izq == NULL) {
-	pos->izq = temp;
-      }
+#ifdef DEBUG
+      printf("%c va a la izquierda en %c\n", value, pos->value);
+#endif
+      pos->izq = insert(value, pos->izq);
     } else {
-      temp = insert(value, pos->der); // value is larger
-      if (pos->der == NULL) {
-	pos->der = temp;
-      }
+#ifdef DEBUG
+      printf("%c va a la derecha en %c\n", value, pos->value);
+#endif
+      pos->der = insert(value, pos->der); // value is larger
     }
   }
+#ifdef DEBUG
+  printf("regresando desde %c\n", pos->value);
+#endif
   return pos;
 }
 
@@ -99,7 +108,7 @@ node* eliminar(char value, node* pos) { // WORK IN PROGRESS
 #endif
 	  hijo->izq = pos->izq;
 	  free(pos);
-	  return hijo; // el hijo derecho sustituye al nodo borrado
+	  return pos->der; // el hijo derecho sustituye al nodo borrado
 	}
       }
     } else if (pos->value > value) {
@@ -107,7 +116,11 @@ node* eliminar(char value, node* pos) { // WORK IN PROGRESS
     } else {
       pos->der = eliminar(value, pos->der);      
     }
-  }
+    return pos;
+  } 
+#ifdef DEBUG
+  printf("no hay un nodo con %c\n", value);
+#endif
   return pos;
 }
 
@@ -140,7 +153,6 @@ void alpha(node* pos) {
 typedef enum { agregar, borrar } estado;
 
 int main() {
-  node* n = NULL;
   node* tree = NULL; 
   char c;
   estado e = agregar;
@@ -169,14 +181,17 @@ int main() {
     default:
       if (!isspace(c)) {
 	if (e == agregar) {
-	  n = insert(tolower(c), tree);
-	  if (tree == NULL) {
-	    tree = n; // this is the root
-	  }
+	  tree = insert(tolower(c), tree);
 	} else {
 	  tree = eliminar(tolower(c), tree);
 	}
       }
+#ifdef DEBUG
+      printf("depth update\n");
+      set_depth(tree, 0);
+      printf("visualization\n");
+      show(tree, '+');
+#endif
       break;
     }
   }
