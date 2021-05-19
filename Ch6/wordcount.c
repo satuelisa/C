@@ -55,12 +55,12 @@ node* insert(char* word, node* pos) {
       printf("%s incrementa su contador\n", pos->word);
 #endif
       ++(pos->counter);
-    } else if (cmp < 0) { 
+    } else if (cmp > 0) { 
 #ifdef DEBUGx
       printf("%s va a la izquierda en %s\n", word, pos->word);
 #endif
       pos->izq = insert(word, pos->izq);
-    } else { // cmp > 0
+    } else { // cmp < 0
 #ifdef DEBUG
       printf("%s va a la derecha en %s\n", word, pos->word);
 #endif
