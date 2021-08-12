@@ -1,0 +1,6 @@
+Student 1 elisa (123) is ITS
+Student 2 carlos (345) is IAS
+Student 3 mariana (678) is IMT
+Student 4 juan (786876) is IEC
+Student 5 margo (7681) is IMA
+Student 6 fulano (0) is IAS

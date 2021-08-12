@@ -1,0 +1,5 @@
+Only strictly positive counts are permitted, exiting...
+3 records processed
+3 records processed
+3 records processed
+3 records processed
