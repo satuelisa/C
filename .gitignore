@@ -1,3 +1,8 @@
+*.py
+*.c~
+*.out
+biblia.txt
+
 # emacs
 *~
 
