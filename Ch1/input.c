@@ -11,6 +11,6 @@ int main() {
       printf(":)\n");      
     }
   }
-  
+  printf("Done. Over and out.\n");        
   return 0;
 }
